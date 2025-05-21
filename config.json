@@ -1,0 +1,10 @@
+{
+    "kohonen": {
+        "k": 4,
+        "R": 1.0,
+        "epochs": 200,
+        "learning_rate": 1.0,
+        "initialize_random_weights": "False",
+        "similarity_function": "euclidean_distance"
+    }
+}
