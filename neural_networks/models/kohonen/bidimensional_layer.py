@@ -1,19 +1,17 @@
 from typing import List
 import numpy as np
-from kohonen_neuron import KohonenNeuron
+from neural_networks.models.kohonen.kohonen_neuron import KohonenNeuron
 
 class BidimensionalLayer:
     def __init__(self, k:int, weights_len:int, distance_function, initialize_random_weights:bool, dataset:List[any] = []):
         self.k = k
         self.neuron_matrix = []
         for i in range(k):
-            self.neuron_matrix[i] = []
+            self.neuron_matrix.append([])
             for j in range(k):
-                self.neuron_matrix[i][j] = KohonenNeuron(weights_len, distance_function, initialize_random_weights, dataset)
+                self.neuron_matrix[i].append(KohonenNeuron(weights_len, distance_function, initialize_random_weights, dataset))
 
-    def get_neuron_neighbours(self, best_neuron_index:int, R:float):
-        best_row = best_neuron_index / self.k
-        best_col = best_neuron_index % self.k
+    def get_neuron_neighbours(self, best_row:int, best_col:int, R:float):
         rounded_R = int(np.ceil(R))
         neighbours = []
 
@@ -23,6 +21,8 @@ class BidimensionalLayer:
                     continue
                 new_row = best_row + delta_row
                 new_col = best_col + delta_col
+                if (new_row < 0 or new_col < 0 or new_row > self.k-1 or new_col > self.k - 1):
+                    continue
 
                 distance = np.sqrt(delta_col ** 2 + delta_row ** 2)
                 if distance <= R:
