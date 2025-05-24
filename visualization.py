@@ -3,6 +3,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from typing import List
+import seaborn as sns
+from neural_networks.similarity_functions import euclidean_distance
 
 def create_heatmap_for_kohonen_network(data:List[int], k:int, R:float, epochs:int):
     matrix_indexes = np.arange(k)
@@ -27,3 +29,38 @@ def create_heatmap_with_country_labels_for_kohonen_network(data:List[int], count
         for j in range(k):
             ax.text(j, i, '\n'.join(countries_per_neuron[i, j]) if len(countries_per_neuron[i, j]) > 0 else "-", ha='center', va='center', color='black')
     plt.savefig(f"graphs/kohonen_heatmap_with_countries_k_{k}_R_{R}_epochs_{epochs}.png")
+
+def create_distance_map(neuron_matrix):
+    rows = len(neuron_matrix)
+    cols = len(neuron_matrix[0])
+    dist_map = np.zeros((rows, cols))
+
+    for i in range(rows):
+        for j in range(cols):
+            current_weights = neuron_matrix[i][j].weights
+            neighbors = []
+
+            if i > 0:
+                neighbors.append(neuron_matrix[i - 1][j].weights)
+            if i < rows - 1:
+                neighbors.append(neuron_matrix[i + 1][j].weights)
+            if j > 0:
+                neighbors.append(neuron_matrix[i][j - 1].weights)
+            if j < cols - 1:
+                neighbors.append(neuron_matrix[i][j + 1].weights)
+
+            if neighbors:
+                distances = [euclidean_distance(current_weights, n) for n in neighbors]
+                dist_map[i, j] = np.mean(distances)
+
+    plot_distance_map(dist_map)
+
+def plot_distance_map(dist_map):
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(dist_map, cmap="plasma", annot=False, square=True, linewidths=0.3)
+    plt.title("Mapa de distancias promedio entre neuronas")
+    plt.xlabel("Columna")
+    plt.ylabel("Fila")
+    plt.tight_layout()
+    plt.savefig("graphs/kohonen_distance_map.png")
+
