@@ -2,10 +2,6 @@ import numpy as np
 from typing import List
 from neural_networks.models.kohonen.bidimensional_layer import BidimensionalLayer
 
-# check for 
-seed = 43
-np.random.seed(seed)
-
 class KohonenNetwork:
     #input_size = n
     def __init__(self, dataset:List[any], entry_size:int, k:int, distance_function, initialize_random_weights:bool):

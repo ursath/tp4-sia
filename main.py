@@ -6,6 +6,8 @@ import json
 import numpy as np
 from visualization import create_heatmap_for_kohonen_network
 
+np.random.seed(43)
+
 if __name__ == '__main__':
     with open("config.json") as f:
         config = json.load(f)
