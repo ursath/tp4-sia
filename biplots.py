@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib
+import seaborn as sns
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
@@ -33,10 +34,12 @@ def pca_biplot(score, coeff, labels=None, labels_delta_dict:dict=None, point_lab
             else:
                 plt.text(coeff[i, 0]*2.2, coeff[i, 1]*2.2, labels[i], color='g')
 
-    plt.xlabel("PC1")
-    plt.ylabel("PC2")
+    plt.xlabel("PC1", fontsize=10)
+    plt.ylabel("PC2", fontsize=10)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
     plt.grid()
-    plt.title("Biplot (PC1 vs PC2)")
+    plt.tight_layout()
     plt.savefig("graphs/pca_biplot.png")
 
 if __name__ == '__main__':
@@ -46,6 +49,20 @@ if __name__ == '__main__':
     x = df[features]
     # standarize the data 
     x = StandardScaler().fit_transform(x)
+
+    x_scaled_df = pd.DataFrame(x, columns=features)
+    x_scaled_df['Country'] = df['Country']
+
+    # Melt the DataFrame for seaborn boxplot
+    melted_df = x_scaled_df.melt(id_vars='Country', var_name='Feature', value_name='Valor estandarizado')
+
+    # Plot boxplots
+    plt.figure(figsize=(12, 6))
+    sns.boxplot(data=melted_df, x='Feature', y='Valor estandarizado', palette='Set2')
+    plt.title("Boxplots de las features estandarizadas")
+    plt.xticks(fontsize=10)
+    plt.tight_layout()
+    plt.savefig("graphs/boxplots.png")
 
     # we need two components for biplot: PC1 and PC2
     pca = PCA(n_components=2) 
