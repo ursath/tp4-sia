@@ -3,11 +3,7 @@ import numpy as np
 
 class KohonenNeuron:
     def __init__(self, weights_len:int, distance_function, initialize_random_weights:bool, dataset:List[any] = []):
-        seed = 43
-        np.random.seed(seed)
         if initialize_random_weights:
-            seed = 43
-            np.random.seed(seed)
             weights = np.random.rand(weights_len)
         else:
             weights = np.random.zeroes(weights_len)
