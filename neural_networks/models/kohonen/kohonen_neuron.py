@@ -6,11 +6,10 @@ class KohonenNeuron:
         if initialize_random_weights:
             weights = np.random.rand(weights_len)
         else:
-            weights = np.random.zeroes(weights_len)
+            weights = np.zeros(weights_len)
             for column in range(weights_len):
               row = np.random.randint(len(dataset))
-               # assuming id column is the first one
-              weights[column] = dataset[row][column + 1]
+              weights[column] = dataset[row][column]
 
         self.weights = weights    
         self.distance_function = distance_function
