@@ -1,10 +1,12 @@
 {
     "kohonen": {
-        "k": [4, 8],
-        "R": [1.0, 2.0],
-        "epochs": [200, 500, 1000, 2000],
-        "learning_rate": [1.0],
+        "k": [ 3 ],
+        "R": [ 7.0 ],
+        "epochs": [ 3500 ],
+        "learning_rate": [ 1.0 ],
         "initialize_random_weights": "False",
-        "similarity_function": "euclidean_distance"
+        "similarity_function": "euclidean_distance",
+        "learning_rate_variation": "True",
+        "r_variation": "True"
     }
 }
