@@ -8,5 +8,9 @@
         "similarity_function": "euclidean_distance",
         "learning_rate_variation": "True",
         "r_variation": "True"
+    },
+    "oja": {
+        "epochs": [ 1000 ],
+        "learning_rate": [ 0.001 ]
     }
 }

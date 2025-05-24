@@ -41,9 +41,6 @@ def create_distance_map(neuron_matrix):
                 distances = [euclidean_distance(current_weights, n) for n in neighbors]
                 dist_map[i, j] = np.mean(distances)
 
-    plot_distance_map(dist_map)
-
-def plot_distance_map(dist_map):
     plt.figure(figsize=(8, 6))
     sns.heatmap(dist_map, cmap="plasma", annot=False, square=True, linewidths=0.3)
     plt.title("Mapa de distancias promedio entre neuronas")
@@ -52,3 +49,22 @@ def plot_distance_map(dist_map):
     plt.tight_layout()
     plt.savefig("graphs/kohonen_distance_map.png")
 
+def plot_pca_comparison(features, pca_our, pca_lib):
+
+    x = np.arange(len(features))
+    width = 0.25
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    ax.bar(x - width, pca_our, width, label='PCA (Nuestro Algoritmo)')
+    ax.bar(x, pca_lib, width, label='PCA (Libreria)')
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(features, rotation=45, ha='right')
+    ax.set_ylabel('Componente')
+    ax.set_title('Comparacion de Componentes PCA')
+    ax.legend()
+    ax.grid(True, linestyle='--', alpha=0.5)
+
+    plt.tight_layout()
+    plt.savefig("graphs/pca_comparison.png")
