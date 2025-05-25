@@ -4,6 +4,9 @@ import pandas as pd
 from normalization import Normalization
 from sklearn.decomposition import PCA
 from visualization import plot_pca_comparison
+import numpy as np
+
+np.random.seed(43)
 
 if __name__ == '__main__':
      with open("config.json") as f:

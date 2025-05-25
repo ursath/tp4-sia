@@ -1,5 +1,8 @@
 import os
 from neural_networks.models.hopfield.hopfield_network import HopfieldNetwork
+import numpy as np
+
+np.random.seed(43)
 
 if __name__ == "__main__":
     
