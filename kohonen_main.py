@@ -54,6 +54,12 @@ if __name__ == '__main__':
                         countries = []
                         for index in entry:
                             country = countries_dict[index].upper()[:3]
+                            if index == 21:
+                                country = "SLK"
+                            if index == 22:
+                                country = "SLN"
+                            if index == 27:
+                                country = "UK"
                             countries.append(country)
                         heatmap_data[i, j] = len(entry)
                         countries_data[i, j] = countries
