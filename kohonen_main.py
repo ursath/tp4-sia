@@ -60,4 +60,4 @@ if __name__ == '__main__':
     
                     create_heatmap_for_kohonen_network(heatmap_data,k, R, epochs)
                     create_heatmap_with_country_labels_for_kohonen_network(heatmap_data, countries_data, k, R, epochs)
-                    create_distance_map(kohonen_network.output_layer.neuron_matrix)
+                    create_distance_map(kohonen_network.output_layer.neuron_matrix, k, R, epochs)
