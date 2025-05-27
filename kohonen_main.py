@@ -29,7 +29,8 @@ if __name__ == '__main__':
     # calculate best k
     k_values = kohonen_config['k']
     selected_similarity_function = similarity_functions[kohonen_config['similarity_function']]
-    initialize_random_weights = bool(kohonen_config['initialize_random_weights'])
+    initialize_random_weights = kohonen_config['initialize_random_weights'] == 'True'
+
 
     R_values = kohonen_config['R']
     epoch_values = kohonen_config['epochs']
