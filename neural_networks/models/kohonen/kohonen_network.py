@@ -3,7 +3,14 @@ from typing import List
 from neural_networks.models.kohonen.bidimensional_layer import BidimensionalLayer
 
 class KohonenNetwork:
-    #input_size = n
+
+    # Kohonen Network params:
+    # - dataset: la matriz de entrada (ej. países en columnas normalizadas).
+    # - entry_size: número de features (dimensión de cada vector de entrada).
+    # - k: tamaño del mapa 2D (mapa de k x k neuronas).
+    # - distance_function: métrica de distancia (Euclidean, etc.).
+    # - initialize_random_weights: si se inicializan pesos al azar.
+
     def __init__(self, dataset:List[any], entry_size:int, k:int, distance_function, initialize_random_weights:bool):
         self.output_layer = BidimensionalLayer(k, entry_size, distance_function, initialize_random_weights, dataset)
         self.dataset = dataset
@@ -18,7 +25,7 @@ class KohonenNetwork:
         return best_row, best_col, self.output_layer.neuron_matrix[best_row][best_col].weights
 
     # learning_rate, epochs, R
-    def train(self, R:float, epochs:int, learning_rate:float=None, r_variation:bool=False, learning_rate_variation:bool=False):
+    def train(self, R0:float, epochs:int, learning_rate:float=None, r_variation:bool=False, learning_rate_variation:bool=False):
         repeated_result = 0
         last_entries_per_neuron =np.empty((self.output_layer.k, self.output_layer.k), dtype=object)
 
@@ -32,7 +39,8 @@ class KohonenNetwork:
                 learning_rate = 1 / (epoch + 1)
 
             if r_variation:
-                R = R * (1 - (epoch / epochs))
+                #R = R * (1 - (epoch / epochs))
+                R = self.variate_radius(R0, epoch, epochs)
 
             for entry_index, entry in enumerate(self.dataset):
                 best_row, best_col, best_weights = self.classify(entry)
@@ -50,4 +58,8 @@ class KohonenNetwork:
             last_entries_per_neuron = entries_per_neuron
 
         return entries_per_neuron, epoch
+    
+    def variate_radius(self,R0:float, epoch:int, total_epochs:int):
+        tau = total_epochs / (np.log(R0) * 2)
+        return 1 + (R0 - 1) * np.exp(-epoch / tau)
     
