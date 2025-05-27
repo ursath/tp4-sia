@@ -46,7 +46,7 @@ if __name__ == '__main__':
             for epochs in epoch_values:
                 for learning_rate in learning_rates: 
                     kohonen_network = KohonenNetwork(entries, len(features), k, selected_similarity_function, initialize_random_weights)
-                    entries_per_neuron, epoch = kohonen_network.classify(R, epochs, learning_rate, r_variation, learning_rate_variation)
+                    entries_per_neuron, epoch = kohonen_network.train(R, epochs, learning_rate, r_variation, learning_rate_variation)
 
                     heatmap_data = np.empty((k, k), dtype=int)
                     countries_data = np.empty((k, k), dtype=object)
