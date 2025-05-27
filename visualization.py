@@ -54,7 +54,7 @@ def create_distance_map(neuron_matrix,k:int, R:float, epochs:int):
                 dist_map[i, j] = np.mean(distances)
 
     plt.figure(figsize=(8, 6))
-    sns.heatmap(dist_map, cmap="plasma", annot=False, square=True, linewidths=0.3)
+    sns.heatmap(dist_map, cmap="plasma", vmin=0, vmax=1.5, annot=True, fmt=".2f", square=True, linewidths=0.3)
     plt.title("Mapa de distancias promedio entre neuronas")
     plt.xlabel("Columna")
     plt.ylabel("Fila")
