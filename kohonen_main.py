@@ -29,7 +29,8 @@ if __name__ == '__main__':
     # calculate best k
     k_values = kohonen_config['k'] # tamaño del mapa (#neuronas = k x k)
     selected_similarity_function = similarity_functions[kohonen_config['similarity_function']]
-    initialize_random_weights = bool(kohonen_config['initialize_random_weights'])
+    initialize_random_weights = kohonen_config['initialize_random_weights'] == 'True'
+
 
     R_values = kohonen_config['R']
     epoch_values = kohonen_config['epochs']
@@ -48,7 +49,7 @@ if __name__ == '__main__':
             for epochs in epoch_values:
                 for learning_rate in learning_rates: 
                     kohonen_network = KohonenNetwork(entries, len(features), k, selected_similarity_function, initialize_random_weights)
-                    entries_per_neuron, epoch = kohonen_network.classify(R, epochs, learning_rate, r_variation, learning_rate_variation)
+                    entries_per_neuron, epoch = kohonen_network.train(R, epochs, learning_rate, r_variation, learning_rate_variation)
 
                     # Generamos los gráficos
                     heatmap_data = np.empty((k, k), dtype=int)
@@ -64,5 +65,5 @@ if __name__ == '__main__':
     
                     create_heatmap_for_kohonen_network(heatmap_data,k, R, epochs, initialize_random_weights, learning_rate, learning_rate_variation, r_variation)
                     create_heatmap_with_country_labels_for_kohonen_network(heatmap_data, countries_data, k, R, epochs, initialize_random_weights, learning_rate, learning_rate_variation, r_variation)
-                    create_distance_map(kohonen_network.output_layer.neuron_matrix)
+                    create_distance_map(kohonen_network.output_layer.neuron_matrix, k, R, epochs)
                     create_u_matrix(kohonen_network.output_layer.neuron_matrix, R)

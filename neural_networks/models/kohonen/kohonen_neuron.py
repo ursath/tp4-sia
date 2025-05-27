@@ -10,6 +10,8 @@ class KohonenNeuron:
             for column in range(weights_len):
               row = np.random.randint(len(dataset))
               weights[column] = dataset[row][column]
+            #weights = np.copy(dataset[np.random.randint(len(dataset))])
+
 
         self.weights = weights    
         self.distance_function = distance_function

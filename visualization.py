@@ -15,7 +15,7 @@ def create_heatmap_for_kohonen_network(data:List[int], k:int, R:float, epochs:in
     plt.colorbar()
     for i in range(k):
         for j in range(k):
-            ax.text(j, i, "'1': " + str(data[i, j]), ha='center', va='center', color='black')
+            ax.text(j, i,str(data[i, j]), ha='center', va='center', color='black')
     save_path = f"graphs/kohonen/heatmap_k={k}_R={R}_epochs={epochs}_lr={learning_rate}"
     if(random_weights): 
         save_path += "_weights=random"
@@ -51,7 +51,7 @@ def create_heatmap_with_country_labels_for_kohonen_network(data:List[int], count
 # Ayuda a ver transiciones abruptas: zonas donde hay un cambio fuerte en las características representadas.
 # Colores más oscuros → neuronas similares a sus vecinas.
 # Colores más claros → neuronas muy distintas a sus vecinas 
-def create_distance_map(neuron_matrix):
+def create_distance_map(neuron_matrix,k:int, R:float, epochs:int):
     rows = len(neuron_matrix)
     cols = len(neuron_matrix[0])
     dist_map = np.zeros((rows, cols))
@@ -75,12 +75,12 @@ def create_distance_map(neuron_matrix):
                 dist_map[i, j] = np.mean(distances)
 
     plt.figure(figsize=(8, 6))
-    sns.heatmap(dist_map, cmap="plasma", annot=False, square=True, linewidths=0.3)
+    sns.heatmap(dist_map, cmap="plasma", vmin=0, vmax=1.5, annot=True, fmt=".2f", square=True, linewidths=0.3)
     plt.title("Mapa de distancias promedio entre neuronas")
     plt.xlabel("Columna")
     plt.ylabel("Fila")
     plt.tight_layout()
-    plt.savefig("graphs/kohonen_distance_map.png")
+    plt.savefig(f"graphs/kohonen_distance_map_k_{k}_R_{R}_epochs_{epochs}.png")
 
 
 def create_u_matrix(neuron_matrix, R=1.0):
@@ -116,8 +116,6 @@ def create_u_matrix(neuron_matrix, R=1.0):
     plt.ylabel("Fila")
     plt.tight_layout()
     plt.savefig("graphs/u_matrix.png")
-
-
 
 
 def plot_pca_comparison(features, pca_our, pca_lib):
