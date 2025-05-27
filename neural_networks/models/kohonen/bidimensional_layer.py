@@ -2,15 +2,19 @@ from typing import List
 import numpy as np
 from neural_networks.models.kohonen.kohonen_neuron import KohonenNeuron
 
+# Define una capa de neuronas organizada en una matriz 2D de tamaño k x k
 class BidimensionalLayer:
     def __init__(self, k:int, weights_len:int, distance_function, initialize_random_weights:bool, dataset:List[any] = []):
         self.k = k
         self.neuron_matrix = []
+        # Creo una matriz k x k de neuronas
         for i in range(k):
             self.neuron_matrix.append([])
             for j in range(k):
                 self.neuron_matrix[i].append(KohonenNeuron(weights_len, distance_function, initialize_random_weights, dataset))
 
+    # Dado el índice de una neurona ganadora (best_row, best_col) y un radio de vecindad R
+    # Devuelve las neuronas vecinas dentro del radio R (sin incluir a la neurona ganadora)
     def get_neuron_neighbours(self, best_row:int, best_col:int, R:float):
         rounded_R = int(np.ceil(R))
         neighbours = []

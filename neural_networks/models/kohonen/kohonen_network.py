@@ -3,11 +3,19 @@ from typing import List
 from neural_networks.models.kohonen.bidimensional_layer import BidimensionalLayer
 
 class KohonenNetwork:
-    #input_size = n
+
+    # Kohonen Network params:
+    # - dataset: la matriz de entrada (ej. países en columnas normalizadas).
+    # - entry_size: número de features (dimensión de cada vector de entrada).
+    # - k: tamaño del mapa 2D (mapa de k x k neuronas).
+    # - distance_function: métrica de distancia (Euclidean, etc.).
+    # - initialize_random_weights: si se inicializan pesos al azar.
+
     def __init__(self, dataset:List[any], entry_size:int, k:int, distance_function, initialize_random_weights:bool):
         self.output_layer = BidimensionalLayer(k, entry_size, distance_function, initialize_random_weights, dataset)
         self.dataset = dataset
 
+    # Método principal de entrenamiento:
     # learning_rate, epochs, R
     def classify(self, R:float, epochs:int, learning_rate:float=None, r_variation:bool=False, learning_rate_variation:bool=False):
         repeated_result = 0
