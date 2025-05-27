@@ -9,7 +9,7 @@ class KohonenNetwork:
         self.dataset = dataset
 
     # learning_rate, epochs, R
-    def classify(self, R:float, epochs:int, learning_rate:float=None, r_variation:bool=False, learning_rate_variation:bool=False):
+    def classify(self, R0:float, epochs:int, learning_rate:float=None, r_variation:bool=False, learning_rate_variation:bool=False):
         repeated_result = 0
         last_entries_per_neuron =np.empty((self.output_layer.k, self.output_layer.k), dtype=object)
 
@@ -27,7 +27,8 @@ class KohonenNetwork:
                     learning_rate = 1 / (epoch + 1)
 
                 if r_variation:
-                    R = R * (1 - (epoch / epochs))
+                    #R = R * (1 - (epoch / epochs))
+                    R = self.variate_radius(R0, epoch, epochs)
 
                 best_neuron_index = np.argmin(np.array(distances))
                 best_row = int(best_neuron_index / self.output_layer.k)
@@ -46,4 +47,8 @@ class KohonenNetwork:
             last_entries_per_neuron = entries_per_neuron
 
         return entries_per_neuron, epoch
+    
+    def variate_radius(self,R0:float, epoch:int, total_epochs:int):
+        tau = total_epochs / (np.log(R0) * 2)
+        return 1 + (R0 - 1) * np.exp(-epoch / tau)
     
