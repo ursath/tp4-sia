@@ -18,13 +18,13 @@ class HopfieldNetwork:
     def initialize_weights(self):
         K = np.column_stack(self.patterns)
         self.weights_matrix = (1 / self.len_patterns) * np.dot(K, K.T)
+        np.fill_diagonal(self.weights_matrix, 0)
 
         with open(self.weights_path, 'w') as f:
             for i in range(len(self.weights_matrix)):
                 for j in range(len(self.weights_matrix)):
                     f.write(f"{self.weights_matrix[i][j]} ")
                 f.write("\n")
-
         return self.weights_matrix
     
     def classify(self, input_pattern):
