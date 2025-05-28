@@ -9,6 +9,8 @@ if __name__ == "__main__":
     patterns_dir = "input_data/hopfield_patterns"
 
     patterns = []
+
+    # Crea una lista de patrones a partir de los archivos .txt
     for i in os.listdir(patterns_dir):
         p = []
         if i.endswith(".txt"):
@@ -18,6 +20,7 @@ if __name__ == "__main__":
             flat_pattern = [line for sublist in p for line in sublist]
             patterns.append(flat_pattern)
 
+    # Carga el patrón de entrada (posiblemente ruidoso)
     letter_file = "input_data/input.txt"
     letter_pattern = []
     with open(letter_file, "r") as f:
@@ -25,11 +28,15 @@ if __name__ == "__main__":
     letter_pattern = [[int(x) for x in sublist] for sublist in letter_pattern[0]]
     flat_letter_pattern = [line for sublist in letter_pattern for line in sublist]
 
+    # Convertimos los patrones a arrays de NumPy para hacer cálculos vectoriales
     np_patterns = []    
     for pattern in patterns:
         np_patterns.append(np.array(pattern))
 
+    # Crea una matriz vacía para guardar productos escalares entre patrones
     ortogonality_matrix = np.zeros((len(patterns), len(patterns)))
+
+    # Recorre cada par de patrones y calcula el producto escalar guardando el resultado en la matriz de ortogonalidad
     for i, first_pattern in enumerate(np_patterns):
         for j, second_pattern in enumerate(np_patterns):
             if not np.array_equal(first_pattern, second_pattern):
@@ -39,8 +46,10 @@ if __name__ == "__main__":
     for i in range(len(patterns)):
         print(ortogonality_matrix[i])
 
+    # Crea la red de Hopfield con los patrones e inicializa los pesos
     hopfield_network = HopfieldNetwork(patterns)
     hopfield_network.initialize_weights()
+
     # check weights 
     weights = open("output/hopfield_network_weights.txt", "r").readlines()
     weight_matrix = np.zeros((len(patterns[0]), len(patterns[0])))
@@ -57,6 +66,7 @@ if __name__ == "__main__":
 
     #print("The weight matrix is ok") if symetric else print("The weight matrix is not symetric")
 
+    # Llama a la red para clasificar el patrón de entrada ruidoso y devuelve el resultado final
     epoch, state_vector = hopfield_network.classify(np.array(flat_letter_pattern))
 
     print("obtained output:")
