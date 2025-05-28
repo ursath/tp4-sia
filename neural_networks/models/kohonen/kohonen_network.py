@@ -1,6 +1,8 @@
 import numpy as np
 from typing import List
 from neural_networks.models.kohonen.bidimensional_layer import BidimensionalLayer
+from neural_networks.similarity_functions import euclidean_distance, exponential_similarity
+
 
 class KohonenNetwork:
 
@@ -14,12 +16,16 @@ class KohonenNetwork:
     def __init__(self, dataset:List[any], entry_size:int, k:int, distance_function, initialize_random_weights:bool):
         self.output_layer = BidimensionalLayer(k, entry_size, distance_function, initialize_random_weights, dataset)
         self.dataset = dataset
+        self.distance_function = distance_function
 
     def classify(self, entry):
         distances = []
         for (i,j), neuron in np.ndenumerate(self.output_layer.neuron_matrix):
             distances.append(neuron.distance_function(neuron.weights, entry))
-        best_neuron_index = np.argmin(np.array(distances))
+        if self.distance_function == exponential_similarity:
+            best_neuron_index = np.argmax(np.array(distances))
+        else:
+            best_neuron_index = np.argmin(np.array(distances))  
         best_row = int(best_neuron_index / self.output_layer.k)
         best_col = best_neuron_index % self.output_layer.k 
         return best_row, best_col, self.output_layer.neuron_matrix[best_row][best_col].weights
