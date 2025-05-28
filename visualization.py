@@ -47,11 +47,10 @@ def create_heatmap_with_country_labels_for_kohonen_network(data:List[int], count
     plt.savefig(f"{save_path}.png")
 
 
-# Muestra qué tan diferentes son los pesos entre neuronas vecinas
-# Ayuda a ver transiciones abruptas: zonas donde hay un cambio fuerte en las características representadas.
-# Colores más oscuros → neuronas similares a sus vecinas.
-# Colores más claros → neuronas muy distintas a sus vecinas 
-def create_distance_map(neuron_matrix,k:int, R:float, epochs:int):
+# Para cada neurona calcula el promedio fr la distancia euclídea entre:
+# ● el vector de pesos de la neurona
+# ● el vector de pesos de las neuronas vecinas.
+def create_distance_map(neuron_matrix,k:int, R:float, epochs:int, learning_rate:float, random_weights:bool, r_variation:bool, learning_rate_variation:bool):
     rows = len(neuron_matrix)
     cols = len(neuron_matrix[0])
     dist_map = np.zeros((rows, cols))
@@ -74,40 +73,6 @@ def create_distance_map(neuron_matrix,k:int, R:float, epochs:int):
                 distances = [euclidean_distance(current_weights, n) for n in neighbors]
                 dist_map[i, j] = np.mean(distances)
 
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(dist_map, cmap="plasma", vmin=0, vmax=1.5, annot=True, fmt=".2f", square=True, linewidths=0.3)
-    plt.title("Mapa de distancias promedio entre neuronas")
-    plt.xlabel("Columna")
-    plt.ylabel("Fila")
-    plt.tight_layout()
-    plt.savefig(f"graphs/kohonen_distance_map_k_{k}_R_{R}_epochs_{epochs}.png")
-
-
-def create_u_matrix(neuron_matrix, R=1.0, k=5, epochs=100, learning_rate=0.1, random_weights=False, r_variation=False, learning_rate_variation=False):
-    rows = len(neuron_matrix)
-    cols = len(neuron_matrix[0])
-    dist_map = np.zeros((rows, cols))
-
-    for i in range(rows):
-        for j in range(cols):
-            current_weights = neuron_matrix[i][j].weights
-            neighbors = []
-
-            # Buscar vecinos dentro del radio R
-            for di in range(-int(np.ceil(R)), int(np.ceil(R)) + 1):
-                for dj in range(-int(np.ceil(R)), int(np.ceil(R)) + 1):
-                    if di == 0 and dj == 0:
-                        continue
-                    ni, nj = i + di, j + dj
-                    if 0 <= ni < rows and 0 <= nj < cols:
-                        distance = np.sqrt(di**2 + dj**2)
-                        if distance <= R:
-                            neighbors.append(neuron_matrix[ni][nj].weights)
-
-            if neighbors:
-                distances = [euclidean_distance(current_weights, n) for n in neighbors]
-                dist_map[i, j] = np.mean(distances)
-
     save_path = f"graphs/kohonen/u_matrix/u_matrix_k={k}_R={R}_epochs={epochs}_lr={learning_rate}"
     if(random_weights): 
         save_path += "_weights=random"
@@ -116,10 +81,9 @@ def create_u_matrix(neuron_matrix, R=1.0, k=5, epochs=100, learning_rate=0.1, ra
     if(learning_rate_variation):
         save_path += "_lrVariation"
 
-    # Visualización en escala de grises
     plt.figure(figsize=(8, 6))
-    sns.heatmap(dist_map, cmap="Greys", annot=False, square=True, linewidths=0.3, cbar=True)
-    plt.title("Matriz U (Distancias promedio a vecinos)")
+    sns.heatmap(dist_map, cmap="Greys", vmin=0, annot=False, square=True, linewidths=0.3, cbar=True)
+    plt.title("Mapa de distancias promedio entre neuronas")
     plt.xlabel("Columna")
     plt.ylabel("Fila")
     plt.tight_layout()
