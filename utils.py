@@ -1,4 +1,7 @@
 import random
+import numpy as np
+
+np.random.seed(43)
 
 def save_input_pattern(patron_flat, output_dir):
 

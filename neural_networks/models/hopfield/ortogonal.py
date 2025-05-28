@@ -60,7 +60,7 @@ def sum_orthogonalities(patterns_subset):
 
 # main
 if __name__ == "__main__":
-    patterns_dir = "input_data/best"
+    patterns_dir = "input_data/hopfield_patterns"
 
     patterns = []
     file_names = []
@@ -84,6 +84,3 @@ if __name__ == "__main__":
 
     print("Más ortogonales:", result["best_patterns"], "-> score:", result["best_score"])
     print("Menos ortogonales:", result["worst_patterns"], "-> score:", result["worst_score"])
-
-    result = sum_orthogonalities(patterns)
-    print("Suma de ortogonalidades de los 4 patrones:", result)

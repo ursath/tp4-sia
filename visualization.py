@@ -204,7 +204,7 @@ def display_matrix(matrix, title="", save_as=None):
     plt.close()
 
 
-def visualize_matrix(file_path, output_folder="state_images", show_step=True):
+def visualize_matrix(file_path, output_folder="output/state_images", show_step=True):
     os.makedirs(output_folder, exist_ok=True)
     matrix = load_matrix(file_path)
     for idx, matrix in enumerate(matrix):
@@ -220,15 +220,4 @@ if __name__ == "__main__":
 
     ### Hopfield ###
     visualize_matrix("output/hopfield_network_output.txt")
-
-    visualize_matrix("input_data/hopfield_patterns/a.txt", "image_A", False)
-    visualize_matrix("input_data/hopfield_patterns/f.txt", "image_F", False)
-    visualize_matrix("input_data/hopfield_patterns/i.txt", "image_I", False)
-    visualize_matrix("input_data/hopfield_patterns/j.txt", "image_J", False)
-    visualize_matrix("input_data/hopfield_patterns/t.txt", "image_T", False)
-    visualize_matrix("input_data/hopfield_patterns/l.txt", "image_L", False)
-    visualize_matrix("input_data/hopfield_patterns/o.txt", "image_O", False)
-    visualize_matrix("input_data/hopfield_patterns/x.txt", "image_X", False)
-    visualize_matrix("input_data/hopfield_patterns/z.txt", "image_Z", False)
-
-    visualize_matrix("input_data/hopfield_input.txt", "image_input", False)
+    visualize_matrix("input_data/hopfield_input.txt", "output/image_input", False)

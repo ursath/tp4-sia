@@ -14,7 +14,8 @@
         "learning_rate": [ 0.001 ]
     },
     "hopfield": {
-        "patterns": [ "a.txt", "f.txt", "j.txt" ],
-        "pattern_for_input": "a.txt"
+        "patterns": [ "l.txt", "o.txt", "x.txt", "z.txt" ],
+        "pattern_for_input": "z.txt",
+        "noise_percentage": 0.0
     }
 }

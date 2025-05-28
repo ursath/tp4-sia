@@ -13,6 +13,7 @@ if __name__ == "__main__":
     hopfield_config = config["hopfield"]
     pattern_filenames = hopfield_config["patterns"]
     input_filename = hopfield_config["pattern_for_input"]
+    noise_percentage = hopfield_config["noise_percentage"]
     
     patterns_dir = "input_data/hopfield_patterns"
 
@@ -37,7 +38,7 @@ if __name__ == "__main__":
     with open("input_data/hopfield_patterns/" + input_filename, "r") as f:
         pattern = [[int(x) for x in line.split()] for line in f.read().splitlines()]
     flat_pattern = [x for row in pattern for x in row]
-    flat_letter_pattern = apply_noise(flat_pattern, 0.1)
+    flat_letter_pattern = apply_noise(flat_pattern, noise_percentage)
 
     # Save the noisy input pattern to a file
     save_input_pattern(flat_letter_pattern, "input_data/hopfield_input.txt")
