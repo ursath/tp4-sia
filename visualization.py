@@ -2,6 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from typing import List
 import seaborn as sns
 from neural_networks.similarity_functions import euclidean_distance
@@ -130,3 +131,73 @@ def plot_pca_comparison(features, pca_our, pca_lib):
 
     plt.tight_layout()
     plt.savefig("graphs/pca_comparison.png")
+
+###    Hopfield ###
+
+def cargar_matrices_bloqueadas(ruta_archivo):
+    matrices = []
+    with open(ruta_archivo, "r") as f:
+        bloque = []
+        for linea in f:
+            linea = linea.strip()
+            if not linea:
+                continue  # Saltar líneas vacías
+            # 🔽 Limpieza extra: remover corchetes y convertir a float
+            linea_limpia = linea.replace("[", "").replace("]", "").replace(",", " ")
+            fila = [float(x) for x in linea_limpia.split()]
+            if len(fila) != 5:
+                raise ValueError(f"Fila con {len(fila)} elementos, se esperaban 5.")
+            bloque.append(fila)
+            if len(bloque) == 5:
+                matrices.append(np.array(bloque))
+                bloque = []
+    return matrices
+
+
+def mostrar_matriz(matriz, titulo="", guardar_como=None):
+    fig, ax = plt.subplots(figsize=(3, 3))
+    ax.set_xticks(np.arange(5 + 1) - 0.5, minor=True)
+    ax.set_yticks(np.arange(5 + 1) - 0.5, minor=True)
+    ax.grid(which="minor", color="gray", linestyle='-', linewidth=1)
+    ax.tick_params(which="both", bottom=False, left=False, labelbottom=False, labelleft=False)
+
+    for y in range(5):
+        for x in range(5):
+            if matriz[y][x] == 1:
+                ax.text(x, y, "*", ha='center', va='center', fontsize=20)
+
+    ax.set_xlim(-0.5, 4.5)
+    ax.set_ylim(4.5, -0.5)
+    ax.set_title(titulo)
+
+    if guardar_como:
+        plt.savefig(guardar_como, bbox_inches="tight")
+    else:
+        plt.show()
+    plt.close()
+
+def visualizar_matrices(ruta_archivo, carpeta_salida="imagenes_estados",print_step = True):
+    os.makedirs(carpeta_salida, exist_ok=True)
+    matrices = cargar_matrices_bloqueadas(ruta_archivo)
+    for idx, matriz in enumerate(matrices):
+        nombre_archivo = os.path.join(carpeta_salida, f"estado_{idx + 1:02}.png")
+        if print_step:
+            mostrar_matriz(matriz, titulo=f"Paso {idx + 1}", guardar_como=nombre_archivo)
+        else:
+            mostrar_matriz(matriz, guardar_como=nombre_archivo)
+    print(f"Generadas {len(matrices)} imágenes en la carpeta '{carpeta_salida}'.")
+
+if __name__ == "__main__":
+
+    ### Hopfield ###
+    visualizar_matrices("output/hopfield_network_output.txt")
+
+    visualizar_matrices("input_data/hopfield_patterns/a.txt","imagen_A",False)
+    visualizar_matrices("input_data/hopfield_patterns/f.txt","imagen_F",False)
+    visualizar_matrices("input_data/hopfield_patterns/i.txt","imagen_I",False)
+    visualizar_matrices("input_data/hopfield_patterns/j.txt","imagen_J",False)
+    visualizar_matrices("input_data/hopfield_patterns/t.txt","imagen_T",False)
+    visualizar_matrices("input_data/hopfield_patterns/l.txt","imagen_L",False)
+    visualizar_matrices("input_data/hopfield_patterns/o.txt","imagen_O",False)
+    visualizar_matrices("input_data/hopfield_patterns/x.txt","imagen_X",False)
+    visualizar_matrices("input_data/hopfield_patterns/z.txt","imagen_Z",False)
