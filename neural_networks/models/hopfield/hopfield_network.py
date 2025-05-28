@@ -30,7 +30,7 @@ class HopfieldNetwork:
     def classify(self, input_pattern):
         state_vector = input_pattern
         previous_energy = 0
-
+        repeated = 0
         iteration = 1
         with open(self.output_path, 'w') as states_file:
             with open(self.energy_path, 'w') as energy_file:
@@ -44,6 +44,9 @@ class HopfieldNetwork:
 
                     if current_energy == previous_energy:
                     #if np.array_equal(new_state_vector, state_vector):
+                        repeated += 1
+
+                    if repeated >= 2:
                         return iteration, new_state_vector
 
                     iteration+=1
