@@ -1,7 +1,7 @@
 import os
 from neural_networks.models.hopfield.hopfield_network import HopfieldNetwork
+from utils import apply_noise, save_input_pattern
 import numpy as np
-
 np.random.seed(43)
 
 if __name__ == "__main__":
@@ -18,12 +18,16 @@ if __name__ == "__main__":
             flat_pattern = [line for sublist in p for line in sublist]
             patterns.append(flat_pattern)
 
-    letter_file = "input_data/input.txt"
-    letter_pattern = []
-    with open(letter_file, "r") as f:
-        letter_pattern.append([x.split() for x in f.read().splitlines()])
-    letter_pattern = [[int(x) for x in sublist] for sublist in letter_pattern[0]]
-    flat_letter_pattern = [line for sublist in letter_pattern for line in sublist]
+    #letter_file = "input_data/input.txt"
+    #letter_pattern = []
+    #with open(letter_file, "r") as f:
+    #    letter_pattern.append([x.split() for x in f.read().splitlines()])
+    #letter_pattern = [[int(x) for x in sublist] for sublist in letter_pattern[0]]
+    #flat_letter_pattern = [line for sublist in letter_pattern for line in sublist]
+
+    flat_letter_pattern = apply_noise(patterns, 0.1, index=0)
+    # Save the noisy input pattern to a file
+    save_input_pattern(flat_letter_pattern, "input_data/hopfield_input.txt")
 
     np_patterns = []    
     for pattern in patterns:
