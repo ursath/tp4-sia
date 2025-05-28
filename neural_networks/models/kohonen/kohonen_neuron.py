@@ -6,11 +6,11 @@ class KohonenNeuron:
         if initialize_random_weights:
             weights = np.random.rand(weights_len)
         else:
-            weights = np.zeros(weights_len)
-            for column in range(weights_len):
-              row = np.random.randint(len(dataset))
-              weights[column] = dataset[row][column]
-            #weights = np.copy(dataset[np.random.randint(len(dataset))])
+            #weights = np.zeros(weights_len)
+            #for column in range(weights_len):
+              #row = np.random.randint(len(dataset))
+              #weights[column] = dataset[row][column]
+            weights = np.copy(dataset[np.random.randint(len(dataset))])
 
 
         self.weights = weights    

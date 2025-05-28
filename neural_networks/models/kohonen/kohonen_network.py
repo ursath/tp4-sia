@@ -28,6 +28,7 @@ class KohonenNetwork:
     def train(self, R0:float, epochs:int, learning_rate:float=None, r_variation:bool=False, learning_rate_variation:bool=False):
         repeated_result = 0
         last_entries_per_neuron =np.empty((self.output_layer.k, self.output_layer.k), dtype=object)
+        R = R0
 
         for epoch in range(epochs):
             entries_per_neuron = np.empty((self.output_layer.k, self.output_layer.k), dtype=object)
@@ -48,6 +49,8 @@ class KohonenNetwork:
                 neighbours = self.output_layer.get_neuron_neighbours(best_row, best_col, R)
                 for neuron in neighbours:
                     neuron.update_weights(entry, learning_rate)
+            print(f"Epoch {epoch}, R: {R}, Learning Rate: {learning_rate:.4f}")
+
 
             if np.array_equal(last_entries_per_neuron, entries_per_neuron):
                 repeated_result += 1
