@@ -2,23 +2,29 @@ import os
 from neural_networks.models.hopfield.hopfield_network import HopfieldNetwork
 from utils import apply_noise, save_input_pattern
 import numpy as np
+import json
 np.random.seed(43)
 
 if __name__ == "__main__":
+
+    with open("config.json", "r") as config_file:
+        config = json.load(config_file)
+
+    hopfield_config = config["hopfield"]
+    pattern_filenames = hopfield_config["patterns"]
+    input_filename = hopfield_config["pattern_for_input"]
     
     patterns_dir = "input_data/hopfield_patterns"
 
     patterns = []
 
     # Crea una lista de patrones a partir de los archivos .txt
-    for i in os.listdir(patterns_dir):
-        p = []
-        if i.endswith(".txt"):
-            with open(os.path.join(patterns_dir, i), "r") as f:
-                p.append([x.split() for x in f.read().splitlines()])
-            p = [[int(x) for x in sublist] for sublist in p[0]]
-            flat_pattern = [line for sublist in p for line in sublist]
-            patterns.append(flat_pattern)
+    for filename in pattern_filenames:
+        file_path = patterns_dir + "/" + filename
+        with open(file_path, "r") as f:
+            p = [[int(x) for x in line.split()] for line in f.read().splitlines()]
+        flat_pattern = [x for row in p for x in row]
+        patterns.append(flat_pattern)
 
     #letter_file = "input_data/input.txt"
     #letter_pattern = []
@@ -27,7 +33,12 @@ if __name__ == "__main__":
     #letter_pattern = [[int(x) for x in sublist] for sublist in letter_pattern[0]]
     #flat_letter_pattern = [line for sublist in letter_pattern for line in sublist]
 
-    flat_letter_pattern = apply_noise(patterns, 0.1, index=0)
+    # Aplica ruido al patrón de entrada (el primer patrón en la lista)
+    with open("input_data/hopfield_patterns/" + input_filename, "r") as f:
+        pattern = [[int(x) for x in line.split()] for line in f.read().splitlines()]
+    flat_pattern = [x for row in pattern for x in row]
+    flat_letter_pattern = apply_noise(flat_pattern, 0.1)
+
     # Save the noisy input pattern to a file
     save_input_pattern(flat_letter_pattern, "input_data/hopfield_input.txt")
 

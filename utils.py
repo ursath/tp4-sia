@@ -11,12 +11,9 @@ def save_input_pattern(patron_flat, output_dir):
             fila_str = " ".join(str(x) for x in fila)
             f.write(fila_str + "\n")
 
-def apply_noise(patterns, noise_percentage, index=None):
-    if index is None:
-        index = random.randint(0, len(patterns) - 1)
+def apply_noise(pattern, noise_percentage):
 
-    original = patterns[index]
-    noisy = original.copy()
+    noisy = pattern.copy()
 
     num_to_flip = int(len(noisy) * noise_percentage)
     indices_to_flip = random.sample(range(len(noisy)), num_to_flip)

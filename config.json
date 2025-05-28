@@ -12,5 +12,9 @@
     "oja": {
         "epochs": [ 1000 ],
         "learning_rate": [ 0.001 ]
+    },
+    "hopfield": {
+        "patterns": [ "a.txt", "f.txt", "j.txt" ],
+        "pattern_for_input": "a.txt"
     }
 }
