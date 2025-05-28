@@ -134,27 +134,28 @@ def plot_pca_comparison(features, pca_our, pca_lib):
 
 ###    Hopfield ###
 
-def cargar_matrices_bloqueadas(ruta_archivo):
-    matrices = []
-    with open(ruta_archivo, "r") as f:
-        bloque = []
-        for linea in f:
-            linea = linea.strip()
-            if not linea:
-                continue  # Saltar líneas vacías
-            # 🔽 Limpieza extra: remover corchetes y convertir a float
-            linea_limpia = linea.replace("[", "").replace("]", "").replace(",", " ")
-            fila = [float(x) for x in linea_limpia.split()]
-            if len(fila) != 5:
-                raise ValueError(f"Fila con {len(fila)} elementos, se esperaban 5.")
-            bloque.append(fila)
-            if len(bloque) == 5:
-                matrices.append(np.array(bloque))
-                bloque = []
-    return matrices
+###    Hopfield ###
+
+def load_matrix(file_path):
+    matrix = []
+    with open(file_path, "r") as f:
+        block = []
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue  
+            clean_line = line.replace("[", "").replace("]", "").replace(",", " ")
+            row = [float(x) for x in clean_line.split()]
+            if len(row) != 5:
+                raise ValueError(f"Row has {len(row)} elements, expected 5.")
+            block.append(row)
+            if len(block) == 5:
+                matrix.append(np.array(block))
+                block = []
+    return matrix
 
 
-def mostrar_matriz(matriz, titulo="", guardar_como=None):
+def display_matrix(matrix, title="", save_as=None):
     fig, ax = plt.subplots(figsize=(3, 3))
     ax.set_xticks(np.arange(5 + 1) - 0.5, minor=True)
     ax.set_yticks(np.arange(5 + 1) - 0.5, minor=True)
@@ -163,41 +164,45 @@ def mostrar_matriz(matriz, titulo="", guardar_como=None):
 
     for y in range(5):
         for x in range(5):
-            if matriz[y][x] == 1:
+            if matrix[y][x] == 1:
                 ax.text(x, y, "*", ha='center', va='center', fontsize=20)
 
     ax.set_xlim(-0.5, 4.5)
     ax.set_ylim(4.5, -0.5)
-    ax.set_title(titulo)
+    ax.set_title(title)
 
-    if guardar_como:
-        plt.savefig(guardar_como, bbox_inches="tight")
+    if save_as:
+        plt.savefig(save_as, bbox_inches="tight")
     else:
         plt.show()
     plt.close()
 
-def visualizar_matrices(ruta_archivo, carpeta_salida="imagenes_estados",print_step = True):
-    os.makedirs(carpeta_salida, exist_ok=True)
-    matrices = cargar_matrices_bloqueadas(ruta_archivo)
-    for idx, matriz in enumerate(matrices):
-        nombre_archivo = os.path.join(carpeta_salida, f"estado_{idx + 1:02}.png")
-        if print_step:
-            mostrar_matriz(matriz, titulo=f"Paso {idx + 1}", guardar_como=nombre_archivo)
+
+def visualize_matrix(file_path, output_folder="state_images", show_step=True):
+    os.makedirs(output_folder, exist_ok=True)
+    matrix = load_matrix(file_path)
+    for idx, matrix in enumerate(matrix):
+        file_name = os.path.join(output_folder, f"state_{idx + 1:02}.png")
+        if show_step:
+            display_matrix(matrix, title=f"Step {idx + 1}", save_as=file_name)
         else:
-            mostrar_matriz(matriz, guardar_como=nombre_archivo)
-    print(f"Generadas {len(matrices)} imágenes en la carpeta '{carpeta_salida}'.")
+            display_matrix(matrix, save_as=file_name)
+    print(f"{len(matrix)} images generated in folder '{output_folder}'.")
+
 
 if __name__ == "__main__":
 
     ### Hopfield ###
-    visualizar_matrices("output/hopfield_network_output.txt")
+    visualize_matrix("output/hopfield_network_output.txt")
 
-    visualizar_matrices("input_data/hopfield_patterns/a.txt","imagen_A",False)
-    visualizar_matrices("input_data/hopfield_patterns/f.txt","imagen_F",False)
-    visualizar_matrices("input_data/hopfield_patterns/i.txt","imagen_I",False)
-    visualizar_matrices("input_data/hopfield_patterns/j.txt","imagen_J",False)
-    visualizar_matrices("input_data/hopfield_patterns/t.txt","imagen_T",False)
-    visualizar_matrices("input_data/hopfield_patterns/l.txt","imagen_L",False)
-    visualizar_matrices("input_data/hopfield_patterns/o.txt","imagen_O",False)
-    visualizar_matrices("input_data/hopfield_patterns/x.txt","imagen_X",False)
-    visualizar_matrices("input_data/hopfield_patterns/z.txt","imagen_Z",False)
+    visualize_matrix("input_data/hopfield_patterns/a.txt", "image_A", False)
+    visualize_matrix("input_data/hopfield_patterns/f.txt", "image_F", False)
+    visualize_matrix("input_data/hopfield_patterns/i.txt", "image_I", False)
+    visualize_matrix("input_data/hopfield_patterns/j.txt", "image_J", False)
+    visualize_matrix("input_data/hopfield_patterns/t.txt", "image_T", False)
+    visualize_matrix("input_data/hopfield_patterns/l.txt", "image_L", False)
+    visualize_matrix("input_data/hopfield_patterns/o.txt", "image_O", False)
+    visualize_matrix("input_data/hopfield_patterns/x.txt", "image_X", False)
+    visualize_matrix("input_data/hopfield_patterns/z.txt", "image_Z", False)
+
+    visualize_matrix("input_data/input.txt", "image_input", False)
