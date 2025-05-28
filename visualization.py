@@ -2,6 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from typing import List
 import seaborn as sns
 from neural_networks.similarity_functions import euclidean_distance
@@ -156,3 +157,78 @@ def plot_pca_comparison_countries(countries, pca_our, pca_lib):
 
     plt.tight_layout()
     plt.savefig("graphs/pca_comparison_by_country.png")
+
+
+
+###    Hopfield   ###
+
+def load_matrix(file_path):
+    matrix = []
+    with open(file_path, "r") as f:
+        block = []
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue  
+            clean_line = line.replace("[", "").replace("]", "").replace(",", " ")
+            row = [float(x) for x in clean_line.split()]
+            if len(row) != 5:
+                raise ValueError(f"Row has {len(row)} elements, expected 5.")
+            block.append(row)
+            if len(block) == 5:
+                matrix.append(np.array(block))
+                block = []
+    return matrix
+
+
+def display_matrix(matrix, title="", save_as=None):
+    fig, ax = plt.subplots(figsize=(3, 3))
+    ax.set_xticks(np.arange(5 + 1) - 0.5, minor=True)
+    ax.set_yticks(np.arange(5 + 1) - 0.5, minor=True)
+    ax.grid(which="minor", color="gray", linestyle='-', linewidth=1)
+    ax.tick_params(which="both", bottom=False, left=False, labelbottom=False, labelleft=False)
+
+    for y in range(5):
+        for x in range(5):
+            if matrix[y][x] == 1:
+                ax.text(x, y, "*", ha='center', va='center', fontsize=20)
+
+    ax.set_xlim(-0.5, 4.5)
+    ax.set_ylim(4.5, -0.5)
+    ax.set_title(title)
+
+    if save_as:
+        plt.savefig(save_as, bbox_inches="tight")
+    else:
+        plt.show()
+    plt.close()
+
+
+def visualize_matrix(file_path, output_folder="state_images", show_step=True):
+    os.makedirs(output_folder, exist_ok=True)
+    matrix = load_matrix(file_path)
+    for idx, matrix in enumerate(matrix):
+        file_name = os.path.join(output_folder, f"state_{idx + 1:02}.png")
+        if show_step:
+            display_matrix(matrix, title=f"Step {idx + 1}", save_as=file_name)
+        else:
+            display_matrix(matrix, save_as=file_name)
+    print(f"{len(matrix)} images generated in folder '{output_folder}'.")
+
+
+if __name__ == "__main__":
+
+    ### Hopfield ###
+    visualize_matrix("output/hopfield_network_output.txt")
+
+    visualize_matrix("input_data/hopfield_patterns/a.txt", "image_A", False)
+    visualize_matrix("input_data/hopfield_patterns/f.txt", "image_F", False)
+    visualize_matrix("input_data/hopfield_patterns/i.txt", "image_I", False)
+    visualize_matrix("input_data/hopfield_patterns/j.txt", "image_J", False)
+    visualize_matrix("input_data/hopfield_patterns/t.txt", "image_T", False)
+    visualize_matrix("input_data/hopfield_patterns/l.txt", "image_L", False)
+    visualize_matrix("input_data/hopfield_patterns/o.txt", "image_O", False)
+    visualize_matrix("input_data/hopfield_patterns/x.txt", "image_X", False)
+    visualize_matrix("input_data/hopfield_patterns/z.txt", "image_Z", False)
+
+    visualize_matrix("input_data/input.txt", "image_input", False)
