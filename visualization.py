@@ -111,7 +111,7 @@ def visualize_single_variable(neuron_matrix, var_index: int):
     plt.close()
 
 
-def plot_pca_comparison(features, pca_our, pca_lib):
+def plot_pca_comparison_features(features, pca_our, pca_lib):
 
     x = np.arange(len(features))
     width = 0.25
@@ -130,3 +130,29 @@ def plot_pca_comparison(features, pca_our, pca_lib):
 
     plt.tight_layout()
     plt.savefig("graphs/pca_comparison.png")
+
+
+def plot_pca_comparison_countries(countries, pca_our, pca_lib):
+    x = np.arange(len(countries))
+    width = 0.25
+
+    order = np.argsort(pca_our)
+    countries = countries[order]
+    pca_our = pca_our[order]
+    pca_lib = pca_lib[order]
+
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    ax.bar(x - width, pca_our, width, label='PCA (Nuestro Algoritmo)')
+    ax.bar(x, pca_lib, width, label='PCA (Librería)')
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(countries, rotation=45, ha='right')
+    ax.set_ylabel('Valor Componente Principal')
+    ax.set_title('Comparación de Componentes PCA por País')
+    ax.legend()
+    ax.grid(True, linestyle='--', alpha=0.5)
+
+    plt.tight_layout()
+    plt.savefig("graphs/pca_comparison_by_country.png")

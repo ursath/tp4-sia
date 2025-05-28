@@ -3,7 +3,7 @@ from neural_networks.models.oja.oja_network import OjaNetwork
 import pandas as pd
 from normalization import Normalization
 from sklearn.decomposition import PCA
-from visualization import plot_pca_comparison
+from visualization import plot_pca_comparison_countries
 import numpy as np
 
 np.random.seed(43)
@@ -37,9 +37,14 @@ if __name__ == '__main__':
 
                 first_component = pca_lib.components_[0]  
 
+                our_projection = entries @ pca
+                lib_projection = entries @ first_component
+
+                countries = df['Country']
+
                 print("PCA (library):", first_component)
 
                 print("Difference:", first_component - pca) 
 
-                plot_pca_comparison(features, pca, first_component)
+                plot_pca_comparison_countries(countries, our_projection, lib_projection)
         
