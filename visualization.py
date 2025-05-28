@@ -9,7 +9,7 @@ from neural_networks.similarity_functions import euclidean_distance
 def create_heatmap_for_kohonen_network(data:List[int], k:int, R:float, epochs:int, random_weights:bool, learning_rate:float, learning_rate_variation:bool, r_variation:bool):
     matrix_indexes = np.arange(k)
     fig, ax = plt.subplots()
-    plt.imshow(data, cmap='plasma', interpolation='nearest')
+    plt.imshow(data, cmap='plasma', interpolation='nearest', vmin=0, vmax=10)
     plt.yticks(matrix_indexes)
     plt.xticks(matrix_indexes)
     plt.colorbar()
@@ -29,7 +29,7 @@ def create_heatmap_for_kohonen_network(data:List[int], k:int, R:float, epochs:in
 def create_heatmap_with_country_labels_for_kohonen_network(data:List[int], countries_per_neuron:List[str],k:int, R:float, epochs:int, random_weights:bool, learning_rate:float, learning_rate_variation:bool, r_variation:bool):
     matrix_indexes = np.arange(k)
     fig, ax = plt.subplots(figsize=(8,5))
-    plt.imshow(data, cmap='plasma', interpolation='nearest')
+    plt.imshow(data, cmap='plasma', interpolation='nearest', vmin=0, vmax=10)
     plt.yticks(matrix_indexes)
     plt.xticks(matrix_indexes)
     plt.colorbar()
@@ -116,6 +116,27 @@ def create_u_matrix(neuron_matrix, R=1.0):
     plt.ylabel("Fila")
     plt.tight_layout()
     plt.savefig("graphs/u_matrix.png")
+
+
+def visualize_single_variable(neuron_matrix, var_index: int):
+    rows = len(neuron_matrix)
+    cols = len(neuron_matrix[0])
+    value_map = np.zeros((rows, cols))
+
+    for i in range(rows):
+        for j in range(cols):
+            # Obtenemos el valor de la variable 'var_index' del vector de pesos de cada neurona
+            value_map[i, j] = neuron_matrix[i][j].weights[var_index]
+
+    # Visualización en escala de grises
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(value_map, cmap="plasma", annot=False, square=True, linewidths=0.3, cbar=True)
+    plt.title(f"Distribución de la variable {var_index}")
+    plt.xlabel("Columna")
+    plt.ylabel("Fila")
+    plt.tight_layout()
+    plt.savefig(f"graphs/single_variable_{var_index}.png")
+    plt.close()
 
 
 def plot_pca_comparison(features, pca_our, pca_lib):
