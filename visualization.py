@@ -83,7 +83,7 @@ def create_distance_map(neuron_matrix,k:int, R:float, epochs:int):
     plt.savefig(f"graphs/kohonen_distance_map_k_{k}_R_{R}_epochs_{epochs}.png")
 
 
-def create_u_matrix(neuron_matrix, R=1.0):
+def create_u_matrix(neuron_matrix, R=1.0, k=5, epochs=100, learning_rate=0.1, random_weights=False, r_variation=False, learning_rate_variation=False):
     rows = len(neuron_matrix)
     cols = len(neuron_matrix[0])
     dist_map = np.zeros((rows, cols))
@@ -108,6 +108,14 @@ def create_u_matrix(neuron_matrix, R=1.0):
                 distances = [euclidean_distance(current_weights, n) for n in neighbors]
                 dist_map[i, j] = np.mean(distances)
 
+    save_path = f"graphs/kohonen/u_matrix/u_matrix_k={k}_R={R}_epochs={epochs}_lr={learning_rate}"
+    if(random_weights): 
+        save_path += "_weights=random"
+    if(r_variation):
+        save_path += "_rVariation"
+    if(learning_rate_variation):
+        save_path += "_lrVariation"
+
     # Visualización en escala de grises
     plt.figure(figsize=(8, 6))
     sns.heatmap(dist_map, cmap="Greys", annot=False, square=True, linewidths=0.3, cbar=True)
@@ -115,7 +123,7 @@ def create_u_matrix(neuron_matrix, R=1.0):
     plt.xlabel("Columna")
     plt.ylabel("Fila")
     plt.tight_layout()
-    plt.savefig("graphs/u_matrix.png")
+    plt.savefig(f"{save_path}.png")
 
 
 def visualize_single_variable(neuron_matrix, var_index: int):

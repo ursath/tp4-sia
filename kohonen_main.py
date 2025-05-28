@@ -72,4 +72,4 @@ if __name__ == '__main__':
                     create_heatmap_for_kohonen_network(heatmap_data,k, R, epochs, initialize_random_weights, learning_rate, learning_rate_variation, r_variation)
                     create_heatmap_with_country_labels_for_kohonen_network(heatmap_data, countries_data, k, R, epochs, initialize_random_weights, learning_rate, learning_rate_variation, r_variation)
                     create_distance_map(kohonen_network.output_layer.neuron_matrix, k, R, epochs)
-                    create_u_matrix(kohonen_network.output_layer.neuron_matrix, R)
+                    create_u_matrix(kohonen_network.output_layer.neuron_matrix, R, k, epochs, learning_rate, initialize_random_weights, r_variation, learning_rate_variation)
