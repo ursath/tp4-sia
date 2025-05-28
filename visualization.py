@@ -231,4 +231,4 @@ if __name__ == "__main__":
     visualize_matrix("input_data/hopfield_patterns/x.txt", "image_X", False)
     visualize_matrix("input_data/hopfield_patterns/z.txt", "image_Z", False)
 
-    visualize_matrix("input_data/input.txt", "image_input", False)
+    visualize_matrix("input_data/hopfield_input.txt", "image_input", False)
