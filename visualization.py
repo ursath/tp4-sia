@@ -215,14 +215,14 @@ def visualize_matrix(file_path, output_folder="output/state_images", show_step=T
             display_matrix(matrix, save_as=file_name)
     print(f"{len(matrix)} images generated in folder '{output_folder}'.")
 
-def plot_energy_vs_iteration(energy_values, iteration_values, consulted_pattern, stored_pattern):
+def plot_energy_vs_iteration(energy_values, iteration_values, consulted_pattern, stored_pattern, noise):
     x_values = np.arange(1, len(energy_values)+1)
     plt.scatter(iteration_values, energy_values)
     plt.xlabel("Número de iteración")
     plt.ylabel("Valor de energía asociada a la red de Hopfield")
     plt.xticks(x_values)
     plt.tight_layout()
-    plt.savefig(f"graphs/hopfield/energy_vs_iteration_for_consulted_{consulted_pattern}_with_{stored_pattern}.png")
+    plt.savefig(f"graphs/hopfield/energy_vs_iteration_for_consulted_{consulted_pattern}_noise_{noise}_with_{stored_pattern}.png")
 
 if __name__ == "__main__":
 

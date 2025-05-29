@@ -93,7 +93,7 @@ if __name__ == "__main__":
         iteration_values.append(float(values[0]))
         energy_values.append(float(values[1]))
 
-    plot_energy_vs_iteration(energy_values, iteration_values, input_filename, ''.join(os.path.splitext(f)[0][0] for f in pattern_filenames))
+    plot_energy_vs_iteration(energy_values, iteration_values, os.path.splitext(input_filename)[0][0], ''.join(os.path.splitext(f)[0][0] for f in pattern_filenames), noise_percentage)
 
     print("obtained output:")
     for i in range(0, len(state_vector), 5):
