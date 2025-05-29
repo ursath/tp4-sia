@@ -3,6 +3,7 @@ import numpy as np
 
 class KohonenNeuron:
     def __init__(self, weights_len:int, distance_function, initialize_random_weights:bool, dataset:List[any] = []):
+        # Se inicializan los pesos de la neurona
         if initialize_random_weights:
             weights = np.random.rand(weights_len)
         else:

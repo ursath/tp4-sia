@@ -18,6 +18,7 @@ class KohonenNetwork:
         self.dataset = dataset
         self.distance_function = distance_function
 
+    # Identifica la neurona ganadora
     def classify(self, entry):
         distances = []
         for (i,j), neuron in np.ndenumerate(self.output_layer.neuron_matrix):
@@ -50,14 +51,19 @@ class KohonenNetwork:
                 R = self.variate_radius(R0, epoch, epochs)
 
             for entry_index, entry in enumerate(self.dataset):
+                # Se clasifica y se identifica la neurona ganadora
                 best_row, best_col, best_weights = self.classify(entry)
                 entries_per_neuron[best_row][best_col].append(entry_index)
+
+                # Se obtienen los vecinos de la neurona ganadora
                 neighbours = self.output_layer.get_neuron_neighbours(best_row, best_col, R)
+
+                # Se actualizan los pesos
                 for neuron in neighbours:
                     neuron.update_weights(entry, learning_rate)
             print(f"Epoch {epoch}, R: {R}, Learning Rate: {learning_rate:.4f}")
 
-
+            # Condición de corte: si las entradas por neurona no cambian en 2 épocas consecutivas
             if np.array_equal(last_entries_per_neuron, entries_per_neuron):
                 repeated_result += 1
             else:
