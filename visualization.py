@@ -95,6 +95,7 @@ def visualize_single_variable(neuron_matrix, var_index: int):
     rows = len(neuron_matrix)
     cols = len(neuron_matrix[0])
     value_map = np.zeros((rows, cols))
+    features = ['Area', 'GDP', 'Inflation', 'Life.expect', 'Military', 'Pop.growth', 'Unemployment']
 
     for i in range(rows):
         for j in range(cols):
@@ -104,7 +105,7 @@ def visualize_single_variable(neuron_matrix, var_index: int):
     # Visualización en escala de grises
     plt.figure(figsize=(8, 6))
     sns.heatmap(value_map, cmap="plasma", annot=False, square=True, linewidths=0.3, cbar=True)
-    plt.title(f"Distribución de la variable {var_index}")
+    plt.title(f"Distribución de la variable: {features[var_index]}")
     plt.xlabel("Columna")
     plt.ylabel("Fila")
     plt.tight_layout()
