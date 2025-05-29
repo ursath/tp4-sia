@@ -4,7 +4,7 @@ from neural_networks.similarity_functions import euclidean_distance, exponential
 from normalization import Normalization
 import json
 import numpy as np
-from visualization import create_heatmap_for_kohonen_network, create_heatmap_with_country_labels_for_kohonen_network, create_distance_map
+from visualization import create_heatmap_for_kohonen_network, create_heatmap_with_country_labels_for_kohonen_network, create_distance_map, visualize_single_variable
 import os
 
 np.random.seed(43)
@@ -72,3 +72,14 @@ if __name__ == '__main__':
                     create_heatmap_for_kohonen_network(heatmap_data,k, R, epochs, initialize_random_weights, learning_rate, learning_rate_variation, r_variation)
                     create_heatmap_with_country_labels_for_kohonen_network(heatmap_data, countries_data, k, R, epochs, initialize_random_weights, learning_rate, learning_rate_variation, r_variation)
                     create_distance_map(kohonen_network.output_layer.neuron_matrix, k, R, epochs, learning_rate, initialize_random_weights, r_variation, learning_rate_variation)
+                    
+                    visualize_single_variable(kohonen_network.output_layer.neuron_matrix,0)
+                    visualize_single_variable(kohonen_network.output_layer.neuron_matrix,1)
+                    visualize_single_variable(kohonen_network.output_layer.neuron_matrix,2)
+                    visualize_single_variable(kohonen_network.output_layer.neuron_matrix,3)
+                    visualize_single_variable(kohonen_network.output_layer.neuron_matrix,4)
+                    visualize_single_variable(kohonen_network.output_layer.neuron_matrix,5)
+                    visualize_single_variable(kohonen_network.output_layer.neuron_matrix,6)
+
+                    
+

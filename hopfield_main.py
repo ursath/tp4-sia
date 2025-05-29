@@ -4,6 +4,7 @@ from utils import apply_noise, save_input_pattern
 import numpy as np
 import json
 np.random.seed(43)
+from visualization import plot_energy_vs_iteration
 
 if __name__ == "__main__":
 
@@ -83,6 +84,16 @@ if __name__ == "__main__":
 
     # Llama a la red para clasificar el patrón de entrada ruidoso y devuelve el resultado final
     epoch, state_vector = hopfield_network.classify(np.array(flat_letter_pattern))
+    energy_evolution_lines = open("output/hopfield_network_energy_evolution.txt", "r").readlines()
+    energy_values = []
+    iteration_values = []
+
+    for line in energy_evolution_lines:
+        values = line.split(" ") 
+        iteration_values.append(float(values[0]))
+        energy_values.append(float(values[1]))
+
+    plot_energy_vs_iteration(energy_values, iteration_values, os.path.splitext(input_filename)[0][0], ''.join(os.path.splitext(f)[0][0] for f in pattern_filenames), noise_percentage)
 
     print("obtained output:")
     for i in range(0, len(state_vector), 5):

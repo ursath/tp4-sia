@@ -95,6 +95,7 @@ def visualize_single_variable(neuron_matrix, var_index: int):
     rows = len(neuron_matrix)
     cols = len(neuron_matrix[0])
     value_map = np.zeros((rows, cols))
+    features = ['Area', 'GDP', 'Inflation', 'Life.expect', 'Military', 'Pop.growth', 'Unemployment']
 
     for i in range(rows):
         for j in range(cols):
@@ -104,7 +105,7 @@ def visualize_single_variable(neuron_matrix, var_index: int):
     # Visualización en escala de grises
     plt.figure(figsize=(8, 6))
     sns.heatmap(value_map, cmap="plasma", annot=False, square=True, linewidths=0.3, cbar=True)
-    plt.title(f"Distribución de la variable {var_index}")
+    plt.title(f"Distribución de la variable: {features[var_index]}")
     plt.xlabel("Columna")
     plt.ylabel("Fila")
     plt.tight_layout()
@@ -215,6 +216,14 @@ def visualize_matrix(file_path, output_folder="output/state_images", show_step=T
             display_matrix(matrix, save_as=file_name)
     print(f"{len(matrix)} images generated in folder '{output_folder}'.")
 
+def plot_energy_vs_iteration(energy_values, iteration_values, consulted_pattern, stored_pattern, noise):
+    x_values = np.arange(1, len(energy_values)+1)
+    plt.scatter(iteration_values, energy_values)
+    plt.xlabel("Número de iteración")
+    plt.ylabel("Valor de energía asociada a la red de Hopfield")
+    plt.xticks(x_values)
+    plt.tight_layout()
+    plt.savefig(f"graphs/hopfield/energy_vs_iteration_for_consulted_{consulted_pattern}_noise_{noise}_with_{stored_pattern}.png")
 
 if __name__ == "__main__":
 
